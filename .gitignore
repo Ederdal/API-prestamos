@@ -1,0 +1,6 @@
+# Excluir entorno virtual
+EntornoVirtual/
+venv/
+
+# Excluir archivos de configuración sensibles
+.env

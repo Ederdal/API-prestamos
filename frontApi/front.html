@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API de PRESTAMOS S.A. de C.V.</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
+    <link rel="icon" href="favicon.ico">
+</head>
+<body>
+    <header>
+        <div class="encabezado">
+            <h1>API de PRESTAMOS S.A. de C.V.</h1>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="content">
+            <!-- FORMULARIO DE LOGIN -->
+            <form id="loginForm">
+                <label for="loginUserName">Usuario:</label>
+                <input type="text" id="loginUserName" name="userName" required placeholder="Ingrese su usuario">
+                
+                <label for="loginPassword">Contraseña:</label>
+                <input type="password" id="loginPassword" name="password" required placeholder="Ingrese su contraseña">
+                
+                <button type="submit" class="button">Iniciar Sesión</button>
+                <p id="errorMensaje" class="error hidden">Usuario o contraseña incorrectos</p>
+            </form>
+
+            <!-- MENÚ DE NAVEGACIÓN -->
+<nav id="menu" class="hidden">
+    <button class="tab-button active" onclick="mostrarSeccion('usuarios')">Usuarios</button>
+    <button class="tab-button" onclick="mostrarSeccion('materiales')">Materiales</button>
+    <button class="tab-button" onclick="mostrarSeccion('prestamos')">Préstamos</button>
+    <button class="button" id="logoutButton" onclick="cerrarSesion()">Cerrar Sesión</button> <!-- Botón de logout -->
+</nav>
+
+
+            <!-- SECCIÓN USUARIOS -->
+            <div id="usuarios" class="tab-content hidden">
+                <!-- FORMULARIO PARA AGREGAR USUARIO -->
+                <form id="usuarioForm">
+                    <div class="form-group">
+                        <input type="text" id="nombre" placeholder="Nombre" required>
+                        <input type="text" id="apellido" placeholder="Apellido" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="typeUser" placeholder="Tipo de Usuario (Ej: Student, Admin)" required>
+                        <input type="text" id="registerUserName" placeholder="Nombre de Usuario" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" id="registerEmail" placeholder="Correo Electrónico" required>
+                        <input type="password" id="registerPassword" placeholder="Contraseña" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="phoneNumber" placeholder="Teléfono" required>
+                        <input type="text" id="status" placeholder="Estado (Ej: Active, Inactive)" required>
+                    </div>
+                    <button type="submit" class="button">Agregar Usuario</button>
+                </form>
+                
+                <button class="button" onclick="obtenerUsuarios()">Obtener Usuarios</button>
+                
+                <div class="table-container">
+                    <table id="usuariosTabla">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Apellido</th>
+                                <th>Email</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usuariosLista"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- SECCIÓN MATERIALES -->
+            <div id="materiales" class="tab-content hidden">
+                <h2>Lista de Materiales</h2>
+                
+                <!-- FORMULARIO PARA AGREGAR MATERIAL -->
+                <form id="materialForm">
+                    <div class="form-group">
+                        <label for="tipoMaterial">Tipo de Material:</label>
+                        <select id="tipoMaterial" required>
+                            <option value="cañon">Cañon</option>
+                            <option value="computadora">Computadora</option>
+                            <option value="extension">Extension</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="marca">Marca:</label>
+                        <input type="text" id="marca" placeholder="Marca" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="modelo">Modelo:</label>
+                        <input type="text" id="modelo" placeholder="Modelo" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="estadoMaterial">Estado:</label>
+                        <select id="estadoMaterial" required>
+                            <option value="Disponible">Disponible</option>
+                            <option value="Prestado">Prestado</option>
+                            <option value="En mantenimiento">En mantenimiento</option>
+                            <option value="etc.">etc.</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="button">Agregar Material</button>
+                </form>
+                
+                <button class="button" onclick="obtenerMateriales()">Obtener Materiales</button>
+                
+                <div class="table-container">
+                    <table id="materialesTabla">
+                        <thead>
+                            <tr>
+                                <th>Tipo</th>
+                                <th>Marca</th>
+                                <th>Modelo</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody id="materialesLista"></tbody>
+                    </table>
+                </div>
+            </div>
+
+<!-- SECCIÓN PRÉSTAMOS -->
+<div id="prestamos" class="tab-content hidden">
+    <h2>Lista de Préstamos</h2>
+    
+    <!-- FORMULARIO PARA AGREGAR PRÉSTAMO -->
+    <form id="prestamoForm">
+        <div class="form-group">
+            <label for="idUsuario">ID Usuario:</label>
+            <input type="number" id="idUsuario" placeholder="ID Usuario" required>
+        </div>
+        <div class="form-group">
+            <label for="idMaterial">ID Material:</label>
+            <input type="number" id="idMaterial" placeholder="ID Material" required>
+        </div>
+        <div class="form-group">
+            <label for="fechaPrestamo">Fecha Préstamo:</label>
+            <input type="datetime-local" id="fechaPrestamo" required>
+        </div>
+        <div class="form-group">
+            <label for="fechaDevolucion">Fecha Devolución:</label>
+            <input type="datetime-local" id="fechaDevolucion">
+        </div>
+        <div class="form-group">
+            <label for="estadoPrestamo">Estado:</label>
+            <select id="estadoPrestamo" required>
+                <option value="Activo">Activo</option>
+                <option value="Devuelto">Devuelto</option>
+                <option value="Vencido">Vencido</option>
+            </select>
+        </div>
+        <button type="submit" class="button">Agregar Préstamo</button>
+    </form>
+    
+    <button class="button" onclick="obtenerPrestamos()">Obtener Préstamos</button>
+    
+    <div class="table-container">
+        <table id="prestamosTabla">
+            <thead>
+                <tr>
+                    <th>ID Préstamo</th>
+                    <th>ID Usuario</th>
+                    <th>ID Material</th>
+                    <th>Fecha Préstamo</th>
+                    <th>Fecha Devolución</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody id="prestamosLista"></tbody>
+        </table>
+    </div>
+</div>
+        </div>
+    </div>
+</body>
+</html>
