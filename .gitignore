@@ -4,4 +4,3 @@ venv/
 
 # Excluir archivos de configuración sensibles
 .env
-config/ca.pem

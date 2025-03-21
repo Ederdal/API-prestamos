@@ -6,6 +6,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from routes.user import user
 from routes.material import material_router
 from routes.prestamo import prestamo_router
+from fastapi import FastAPI
+from uvicorn import run
 
 # Inicialización de la aplicación FastAPI
 app = FastAPI(
@@ -57,7 +59,13 @@ app.include_router(user)
 app.include_router(material_router)
 app.include_router(prestamo_router)
 
-# Ruta de prueba para verificar si el servidor está corriendo
+
+
 @app.get("/")
-async def root():
-    return {"message": "API de PRESTAMOS S.A. de C.V. funcionando correctamente"}
+def read_root():
+    a = "a"
+    b = "b" + a
+    return {"Hello": "World", "b": b}
+
+if __name__ == "__main__":
+    run(app, host="127.0.0.1", port=8000)
