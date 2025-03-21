@@ -25,7 +25,6 @@ def get_db():
     "/users/", 
     response_model=List[schemas.user.user], 
     tags=["Usuarios"], 
-    dependencies=[Depends(Portador())]  # Protección con JWT
 )
 async def read_users(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
     db_users = get_users(db=db, skip=skip, limit=limit)
@@ -107,8 +106,6 @@ def read_credentials(ususario: schemas.user.UserLogin, db: Session = Depends(get
         db,
         userName=ususario.userName,
         password=ususario.password,
-        email=ususario.email,
-        phoneNumber=ususario.phoneNumber
     )
     if db_credentials is None:
         return JSONResponse(content={'mensaje': 'Acceso denegado'}, status_code=404)

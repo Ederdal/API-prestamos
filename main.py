@@ -17,7 +17,7 @@ app = FastAPI(
 # Middleware CORS para permitir solicitudes desde el frontend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://127.0.0.1:5500", "*"],  # Permitir solicitudes desde el frontend
+    allow_origins=["http://127.0.0.1:5500"],  # Permitir solicitudes desde el frontend
     allow_credentials=True,
     allow_methods=["*"],  # Permitir todos los métodos HTTP
     allow_headers=["*"],  # Permitir todos los encabezados

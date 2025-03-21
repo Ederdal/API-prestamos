@@ -12,7 +12,7 @@ class userBase(BaseModel):
     phoneNumber: str
     status: str
     registrationDate: datetime
-    updateDate: datetime
+    updateDate: Optional[datetime] = None 
 
 class userCreate(userBase):
     pass
@@ -25,6 +25,4 @@ class user(userBase):
         
 class UserLogin(BaseModel):
     userName: Optional[str] = None
-    email: Optional[str] = None
-    phoneNumber: Optional[str] = None
     password: str

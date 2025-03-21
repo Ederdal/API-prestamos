@@ -12,24 +12,30 @@ def get_db():
         yield db
     finally:
         db.close()
-
 class Portador(HTTPBearer):
     async def __call__(self, request: Request, db: Session = Depends(get_db)):
-        # Obtiene las credenciales del token
         autorizacion: HTTPAuthorizationCredentials = await super().__call__(request)
-        dato = valida_token(autorizacion.credentials)
+        if not autorizacion or not autorizacion.credentials:
+            raise HTTPException(status_code=403, detail="Token no proporcionado")
 
-        # Verifica las credenciales en la base de datos
+        try:
+            dato = valida_token(autorizacion.credentials)
+        except Exception:
+            raise HTTPException(status_code=403, detail="Token inválido o corrupto")
+
+        userName = dato.get("userName")
+        password = dato.get("password")
+
+        if not userName or not password:
+            raise HTTPException(status_code=403, detail="Token inválido: faltan credenciales")
+
         db_userlogin = crud.users.get_user_by_credentials(
-            db,
-            userName=dato["userName"],  # Ajusta estos campos según tu modelo
-            email=dato["email"],
-            phoneNumber=dato["phoneNumber"],
-            password=dato["password"]
+            db=db,
+            userName=userName,
+            password=password
         )
 
         if db_userlogin is None:
             raise HTTPException(status_code=403, detail="Token inválido o usuario no encontrado")
 
-        # Retorna los datos del usuario autenticado
         return db_userlogin
